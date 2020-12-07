@@ -1,16 +1,30 @@
-import bear from './img/bear2.jpg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import axios from "axios";
+import SiteHead from "./components/SiteHead/Sitehead";
+import Navbar from "./components/Navbar/Navbar";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Jordan Kirby</h1>
-        <h3>Testing deploying to GitHub pages</h3>
-        <img src={bear} alt="bear" />
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  state = {
+    employees: [],
+  };
+
+  componentDidMount() {
+    axios.get(`https://randomuser.me/api/?results=20&nat=Aus`).then((res) => {
+      this.setState({ employees: res.data.results });
+    });
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <SiteHead />
+        {this.state.employees.length > 0 && (
+          <Navbar employees={this.state.employees} />
+        )}
+      </div>
+    );
+  }
 }
 
 export default App;
